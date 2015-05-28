@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="jumbotron text-center">
+        <h1>Create Group</h1>
+        <p>{{ greeting }}</p>
+    </div>
+    <div class="jumbotron">
+         <form class="form-horizontal" action="/submitGroup" method="post"
+              onKeyUp="checkForm()" onSubmit="return checkUniqueValues()" id="groupCreateForm">
+
+                <div id="errorMessage" ng-if="message.length > 0">
+                    <div class="alert alert-danger">{{ message }}</div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="name">Group Name</label>
+                    <div class="controls">
+                        <input id="name" name="name" type="text" placeholder="Arise Youth">
+                    </div>
+                </div>
+
+                 <div class="control-group">
+                     <label class="control-label" for="groupId">Unique Web Address</label>
+                     <div class="controls">
+                         <input id="groupId" name="groupId" type="text" placeholder="AriseYouth">
+                     </div>
+                 </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="country">Country of Group</label>
+                    <div class="controls">
+                        <input id="country" name="country" type="text" placeholder="Australia">
+                    </div>
+                </div>
+
+                 <div class="control-group">
+                     <label class="control-label" for="city">City of Group</label>
+                     <div class="controls">
+                         <input id="city" name="city" type="text" placeholder="Cairns">
+                     </div>
+                 </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="inFile">Group Profile Picture</label>
+                    <div class="controls">
+                        <input id="inFile" type="file" name="userPhoto" required=""/>
+                    </div>
+                </div>
+
+                <br>
+                <!-- Button -->
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" id="submitButton" name="submit" class="btn btn-secondary">Create Group</button>
+
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>

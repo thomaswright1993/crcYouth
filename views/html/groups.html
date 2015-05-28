@@ -1,0 +1,40 @@
+<div class="container">
+	<div class="jumbotron text-center">
+		<h1>Groups Page</h1>
+        <br>
+        <form class="col-lg-12">
+            <div class="input-group input-group-lg col-sm-offset-4 col-sm-4">
+                <input type="text" class="center-block form-control input-lg" placeholder="Find your youth group" id="groupSearch">
+                <span class="input-group-btn"><button class="btn btn-lg btn-primary" type="submit" onclick="findGroups()"><span class="glyphicon glyphicon-search"></span></button></span>
+            </div>
+        </form>
+    </div>
+
+    <div ng-if="groups.length === 0">
+        <div class="col-md-12">
+            <div class="panel panel-default text-center">
+                <div style="padding: 15px; color: darkgrey">
+                     <h4>No groups found with that name :'(</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="groups.length !== 0">
+        <div class="col-md-6" ng-repeat="group in groups" >
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="/#groups/{{ group.id }}" style="float:left">
+                        <img style="border:1px solid rgba(0, 0, 0, 0.15);" width="80" height="80" src="/images/{{group.imagePath}}"/>
+                    </a>
+                    <div>
+                        <div style="padding-left: 15px; float: left">
+                            <a href="/#groups/{{ group.id}}" style="padding-top:0;margin-top: 0; font-size: 32px"><b>{{group.name}}</b></a>
+                            <p style="font-size: 24px">{{group.city + " - " + group.country}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Crc Youth Server" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="F:/nodejs/node" path-to-js-file="server.js" working-dir="$PROJECT_DIR$">
+    <envs>
+      <env name="DEBUG" value="NodeAuth" />
+    </envs>
+    <browser start="true" url="http://localhost:8080/" />
+    <RunnerSettings RunnerId="NodeJS.debug" />
+    <RunnerSettings RunnerId="NodeJS.run" />
+    <ConfigurationWrapper RunnerId="NodeJS.debug" />
+    <ConfigurationWrapper RunnerId="NodeJS.run" />
+    <method />
+  </configuration>
+</component>

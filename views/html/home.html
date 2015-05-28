@@ -1,0 +1,83 @@
+<link type="text/css" rel="stylesheet" href="/css/startUpcss.css"/>
+
+<div class="container">
+    <div class="container-full">
+        <div class="row">
+            <div class="col-lg-12 text-center v-center">
+
+                <h1>CRC Youth</h1><div class="row"></div>
+                <p class="lead">Join your youth group online</p>
+                <br>
+                <form class="col-lg-12">
+                    <div class="input-group input-group-lg col-sm-offset-4 col-sm-4">
+                        <input type="text" class="center-block form-control input-lg" placeholder="Find your youth group" id="groupSearch">
+                        <span class="input-group-btn"><button class="btn btn-lg btn-primary" type="submit" onclick="findGroups()"><span class="glyphicon glyphicon-search"></span></button></span>
+                    </div>
+                </form>
+            </div>
+        </div> <!-- /row -->
+        <br><br><br><br><br>
+    </div> <!-- /container full -->
+
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3>About Us </h3></div>
+                    <div class="panel-body">CRC Youth is a closed social media site for the youth and leaders from
+                        CRC International youth groups around the world.
+                        The CRC denomination has many youth groups world wide. If you belong to a youth group then you
+                        can search for it above and then join up to CRC Youth through it.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3>Contact Us</h3></div>
+                    <div class="panel-body">If you have questions about joining a youth group near you or are a youth
+                        leader trying to set up your youth group on the system, then don't hesitate to contact
+                        the Crc Youth site admin at his <a href="mailto:thomaswright1993@hotmail.com">email</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3>Login</h3></div>
+                    <div class="panel-body text-center">
+                        <form class="form-horizontal" action="/login" method="post" onKeyUp="checkForm()" onSubmit="return checkSubmitForm()" id="loginForm">
+                            <fieldset>
+                                <!-- Text input-->
+                                <div class="control-group">
+                                    <label class="control-label" for="email">Email Address</label>
+                                    <div class="controls">
+                                        <input id="email" name="email" type="text" placeholder=" jesus@gmail.com" class="input-xxlarge" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- Password input-->
+                                <div class="control-group">
+                                    <label class="control-label" for="password">Password</label>
+                                    <div class="controls">
+                                        <input id="password" name="password" type="password" placeholder=" **********" class="input-xxlarge" required="">
+
+                                    </div>
+                                </div>
+
+                                <br>
+                                <!-- Button -->
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <a href="/auth/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
+
+                                        <button id="loginbutton" type="submit" name="loginbutton" class="btn btn-primary">Login</button>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,85 @@
+@import url(http://fonts.googleapis.com/css?family=Antic+Slab);
+
+body{
+	background: #DAE2DB !important;
+	font-size: 14px !important;
+}
+
+h1,h2,h3,h4,h5,h6,p {
+ line-height: 1.45;
+}
+
+h1{
+    font-family: 'Antic Slab', serif;
+}
+
+.page.ng-enter{
+	transition:0.75s;
+	opacity: 0; 
+}
+
+.page.ng-enter-active{
+	opacity: 1;
+}
+
+#icon-bar{
+    background: #000088;
+}
+
+
+#mainNavBar {
+    background-color: #1d003b;
+}
+
+#mainNavBar a:hover {
+    color: #06F;
+}
+
+#navigation, #navigationFront {
+    list-style: none;
+    text-decoration: none;
+}
+
+#navigation > li, #navigationFront > li {
+    float: left;
+    height: 100%;
+}
+
+#navigation > li > a , #navigationFront > li > a {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+#navigation > li#sub ul {
+    width: 11em;
+    margin-top: 3.3em;
+    padding: 0;
+    padding-bottom: 3px;
+    list-style: none;
+    background: #06F;
+    position: absolute;
+    top: -1000em;
+    z-index:100;
+}
+
+#navigation > li#sub ul li a {
+    height: 100%;
+    display: block;
+    padding: 0.5em;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+#navigation > li#sub ul li a:hover {
+    text-decoration: none;
+    color: #000000;
+    background: #FFFFFF;
+    font-weight: bold;
+}
+
+#navigation > li#sub:hover ul {
+    top: 1em;
+}
