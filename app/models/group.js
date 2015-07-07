@@ -5,8 +5,9 @@ var groupSchema = mongoose.Schema({
     name            : String,
     imagePath       : String,
     country         : String,
-    city            : String
-
+    city            : String,
+    longitude       : String,
+    latitude        : String
 });
 
 var leaderSchema = mongoose.Schema({
@@ -17,15 +18,17 @@ var leaderSchema = mongoose.Schema({
 var Leader = mongoose.model('Leader', leaderSchema);
 
 groupSchema.methods.getPreview = function() {
-    return {id: this.id, name: this.name, imagePath: this.imagePath, country: this.country, city: this.city};
+    return {id: this.id, name: this.name, imagePath: this.imagePath, country: this.country, city: this.city, long: this.longitude, lat: this.latitude};
 };
 
-groupSchema.methods.update = function(id, name, imagePath, country, city, leader) {
+groupSchema.methods.update = function(id, name, imagePath, country, city, lat, long, leader) {
     this.id = id;
     this.name = name;
     this.imagePath = imagePath;
     this.country = country;
     this.city = city;
+    this.longitude = long;
+    this.latitude = lat;
     var leaderList = new Leader({
             name : leader.name,
             _id : leader._id
@@ -55,7 +58,9 @@ module.exports = mongoose.model('Group', groupSchema);
 //        name            : 'CFC Youth',
 //        imagePath       : 'cfc.jpg',
 //        country         : 'Australia',
-//        city            : 'Adelaide'
+//        city            : 'Adelaide',
+//          longitude       : '',
+//          latitude        : ''
 //    });
 //    newGroup.save(function(err, newGroup) {
 //        if (err) return console.error(err);
@@ -64,10 +69,10 @@ module.exports = mongoose.model('Group', groupSchema);
 //===============================================================
 
 //==================Update Group Here============================
-//    mongoose.model('Group', groupSchema).findByName('Splat Youth', function(err, groups) {
+//    mongoose.model('Group', groupSchema).findByName('Arise Youth', function(err, groups) {
 //        if (err) return console.error(err);
 //        for(var i = 0; i < groups.length; i++){
-//            groups[i].update('SplatYouth','Splat Youth','splat.png','Australia','Melbourne', {})
+//            groups[i].update('AriseYouth','Arise Youth','arise.jpg','Australia','Cairns','-16.959322','145.740749', {})
 //        }
 //    });
 //===============================================================

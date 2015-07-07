@@ -1,0 +1,39 @@
+<div class="container" >
+    <div class="jumbotron text-center">
+        <h1>Resources Page</h1>
+        <form id="searchRes" class="col-lg-12 form-inline">
+            <div class="input-group input-group-lg col-sm-4.5" >
+                <input type="text" class="center-block form-control input-lg" placeholder="Search through the resources" id="resSearch">
+                <span class="input-group-btn"><button class="btn btn-lg btn-primary" type="submit" onclick="findResources()"><span class="glyphicon glyphicon-search"></span></button></span>
+            </div>
+        </form>
+    </div>
+    <div infinite-scroll="loadMore()" infinite-scroll-distance="0">
+        <div ng-if="resources.length === 0">
+            <div class="col-md-12">
+                <div class="panel panel-default text-center">
+                    <div style="padding: 15px; color: darkgrey">
+                        <h4>No resources found :'(</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="resources.length !== 0">
+            <div class="col-md-6" ng-repeat="resource in resources" >
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                         <span class="glyphicon glyphicon-thumbs-up" style="float: right">245</span>
+                        <a href="/#resource/{{resource.id}}" style="padding-top:0;margin-top: 0; font-size: 32px"><b>{{resource.title}}</b></a>
+                        <h4>
+                            <span class="glyphicon glyphicon-user"></span> {{resource.writerID}}
+                            <div  ng-if="resource.tags.length > 0" style="display: inline">
+                                - <span class="glyphicon glyphicon-tag"></span> <a class="a2" ng-repeat="tag in resource.tags|limitTo:3" href="/#resource^{{tag}}"> #{{tag}}</a>
+                            </div>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="spacer" style="clear: both;"></div>
+    </div>
+</div>

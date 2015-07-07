@@ -113,6 +113,70 @@ module.exports = function(app, passport) {
         });
     });
 
+
+//  =============================================================================
+//  Resource Database Query Routes ==============================================
+//  =============================================================================
+    var Resource = require('../app/models/resource');
+
+    app.get('/getResources/:i', function (req, res) {
+        var resourceData = [];
+        var cursorPosition = req.params.i.split(':')[1];
+        Resource.find().count(function(error, counter){
+            var limitCount = 20;
+            var offset = counter - cursorPosition;
+            if (offset <= 20){
+                if(offset > 0) limitCount = offset;
+                else limitCount = 0;
+            }
+            if (cursorPosition < counter + 20) {
+                Resource.find({},
+                    function (err, resources) { //callback
+                        for (var i = 0; i < resources.length; i++) {
+                            resourceData.push(resources[i].getPreview());
+                        }
+                        res.setHeader('Content-Type', 'application/json');
+                        res.end(JSON.stringify(resourceData));
+                    }
+                ).sort({date:-1}).skip(cursorPosition).limit(limitCount);////////////////////////////////////WHY NO SORTING?!?!?!?!?!?!?!?!?!?!?!? GOTTA LEAVE IT FOR NOW!!!!
+            }
+        });
+    });
+
+    app.get('/getResources~:searchValue/:i', function (req, res) {
+        var resourceData = [];
+        var cursorPosition = req.params.i;
+        Resource.find({title: new RegExp(req.params.searchValue, "i")}, function (err, resources) {
+            for (var i = 0; i < resources.length; i++) {
+                resourceData.push(resources[i].getPreview());
+            }
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(resourceData));
+        }).limit(20).skip(cursorPosition); //i being increments of 20 for each page;;
+    });
+
+    app.get('/getResources^:searchTag/:i', function (req, res) {
+        var resourceData = [];
+        var cursorPosition = req.params.i;
+        Resource.find({tags: new RegExp(req.params.searchTag, "i")}, function (err, resources) {
+            for (var i = 0; i < resources.length; i++) {
+                resourceData.push(resources[i].getPreview());
+            }
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(resourceData));
+        }).limit(20).skip(cursorPosition); //i being increments of 20 for each page;;
+    });
+
+    app.get('/getResource/:id', function (req, res) {
+        var resourceData = [];
+        Resource.find({_id: req.params.id}, function (err, resources) {
+            resourceData.push(resources[0].getFull());
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(resourceData));
+        });
+    });
+
+
 //  =============================================================================
 //  Group Database Query Routes =================================================
 //  =============================================================================
@@ -161,19 +225,19 @@ module.exports = function(app, passport) {
         });
     });
 
-    // process the login form
-    app.post('/submitGroup', function (req, res) {
-        var newGroup = new Group();
-        var leader = {name:"", _id:""};
-
-        if(req.user !== undefined){
-            leader = {name: req.user.name, _id:req.user._id};
-        }
-
-        console.log(req.body.groupId, req.body.name, "image", req.body.country, req.body.city, leader);
-        newGroup.update(req.body.groupId, req.body.name, "image", req.body.country, req.body.city, leader);
-        res.redirect('/#groups:' + req.body.groupId);
-    });
+//    // process the group
+//    app.post('/submitGroup', function (req, res) {
+//        var newGroup = new Group();
+//        var leader = {name:"", _id:""};
+//
+//        if(req.user !== undefined){
+//            leader = {name: req.user.name, _id:req.user._id};
+//        }
+//
+//        console.log(req.body.groupId, req.body.name, "image", req.body.country, req.body.city, leader);
+//        newGroup.update(req.body.groupId, req.body.name, "image", req.body.country, req.body.city, leader);
+//        res.redirect('/#groups:' + req.body.groupId);
+//    });
 };
 
 // route middleware to ensure user is logged in

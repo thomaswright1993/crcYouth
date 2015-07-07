@@ -25,9 +25,21 @@ app.config(function($routeProvider, $locationProvider){
               templateUrl: '/html/training.html',
               controller: 'TrainingCtrl'
           })
-          .when('/content',{
-              templateUrl: '/html/content.html',
-              controller: 'ContentCtrl'
+          .when('/resources',{
+              templateUrl: '/html/resource.html',
+              controller: 'ResourceCtrl'
+          })
+          .when('/resources~:searchValue',{
+              templateUrl: '/html/resource.html',
+              controller: 'ResourceCtrl'
+          })
+          .when('/resources^:searchTag',{
+              templateUrl: '/html/resource.html',
+              controller: 'ResourceCtrl'
+          })
+          .when('/resource/:resourceID',{
+              templateUrl: '/html/resourceTemplate.html',
+              controller: 'ResourceBuilderCtrl'
           })
           .when('/createGroup',{
               templateUrl: '/html/groupCreate.html',
@@ -45,15 +57,20 @@ app.config(function($routeProvider, $locationProvider){
               templateUrl: '/html/profile.html',
               controller: 'ProfileCtrl'
           })
-          .when('/submitPhoto',{
-              templateUrl: '/html/submitPhoto.html',
-              controller: 'SubmitPhotoCtrl'
+          .when('/updateGroupLocation',{
+              templateUrl: '/html/updateGroupLocation.html',
+              controller: 'UpdateGroupLocationCtrl'
+          })
+          .when('/writeContentPost',{
+              templateUrl: '/html/writeContentPost.html',
+              controller: 'UpdateGroupLocationCtrl'
           })
           .otherwise({
               redirectTo: '/'
           });
       //$locationProvider.html5Mode(true); //Makes links weird
 });
+
 
 angular.module('indexApp').controller('IndexCtrl', function($scope, $http){
     $http.get('/getProfile').success(function (results) {

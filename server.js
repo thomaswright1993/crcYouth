@@ -12,7 +12,6 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 var path         = require('path');
 var multer       = require('multer');
-
 // FILE UPLOADING=============================================================
 var done = false;
 var mMulter = multer({ dest: '././views/images/',
@@ -28,9 +27,23 @@ var mMulter = multer({ dest: '././views/images/',
     }
 });
 
-app.post('/submitPhoto', mMulter, function(req){
-    if(done == true){
+var Group = require('././app/models/group');
+
+app.post('/submitGroup', mMulter, function(req, res){
+    if(done == true) {
         console.log(req.files);
+
+
+        var newGroup = new Group();
+        var leader = {name: "", _id: ""};
+
+        if (req.user !== undefined) {
+            leader = {name: req.user.name, _id: req.user._id};
+        }
+
+        console.log(req.body.groupId, req.body.name, req.files.userPhoto.name, req.body.country, req.body.city, leader);
+        newGroup.update(req.body.groupId, req.body.name, req.files.userPhoto.name, req.body.country, req.body.city, leader);
+        res.redirect('/#groups:' + req.body.groupId);
     }
 });
 

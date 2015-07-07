@@ -1,23 +1,58 @@
 <div class="container">
-    <div class="jumbotron" style="height : 394px">
+    <div class="jumbotron" style="height : 394px; background-image: url('/images/torque.jpg'); background-size:100%;">
         <a style="text-decoration: none">
-            <h1 style="margin: 0 0 40px 0"><b>{{group[0].name}}</b></h1>
+            <h1 style="margin: 0 0 40px 0;"><b>{{group[0].name}}</b></h1>
         </a>
-        <img style="border:1px solid rgba(0, 0, 0, 0.15); float: left;" width="160" height="160" src="/images/{{group[0].imagePath}}"/>
-        <h2 style="float: left;">{{group[0].city}} - {{group[0].country}}</h2>
+        <div style="border:1px solid #000;float: left; margin-right: 1em;">
+            <img style="border:2px solid #ffffff; " width="160" height="160" src="/images/{{group[0].imagePath}}"/>
+        </div>
+        <div style="float: left; margin-left: 3em">
+            <br>
+            <br>
+            <h2 style="color: #ffffff; text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000; margin-bottom: 0;"><b>{{group[0].city}} - {{group[0].country}}</b></h2>
+            <h1 style="color: #ffffff; text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000; font-size: 350%; margin-top: 0;"><a class="a3"><b>Cairns Family Church</b></a></h1>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading"><h3>Leaders </h3></div>
-                <div class="panel-body">.
-                </div>
-            </div>
+            <!--<div class="panel panel-default">-->
+            <!--<div class="panel-body">-->
+            <ul class="nav nav-pills nav-stacked">
+                <li id="locationHeader"><a onclick="clickTab('location')"><b>Location</b></a></li>
+                <li id="menu1Header"><a onclick="clickTab('menu1')"><b>Profile Picture</b></a></li>
+                <li id="bannerPhotoHeader"><a onclick="clickTab('bannerPhoto')"><b>Banner Photo</b></a></li>
+                <li id="socialMediaHeader"><a onclick="clickTab('socialMedia')"><b>Social Media</b></a></li>
+            </ul>
+            <!--</div>-->
+            <!--</div>-->
         </div>
+        <!--<div class="col-md-4">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading"><h3>Leaders </h3></div>-->
+                <!--<div class="panel-body">-->
+                    <!--<div ng-if="group[0].leaders.length !== 0">-->
+                        <!--<div ng-repeat="leader in group[0].leaders">-->
+                            <!--<a> {{leader.name}} </a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<h3>-->
+                    <!--<a href="#" class="a2">-->
+                        <!--<i class="fa fa-youtube-play"></i>-->
+                        <!--<i class="fa fa-google-plus"></i>-->
+                        <!--<i class="fa fa-facebook-square"></i>-->
+                        <!--<i class="fa fa-twitter"></i>-->
+                        <!--<i class="fa fa-instagram"></i>-->
+                        <!--<i class="fa fa-apple"></i>-->
+                    <!--</a>-->
+                <!--</h3>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="col-md-8">
             <div class="panel panel-default">
-                <div class="panel-heading"><h3>Hello.</h3></div>
-                <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                <div class="panel-heading"><h3>Group News</h3></div>
+                <div class="panel-body">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
                     Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
                     dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
                     Aliquam in felis sit amet augue.

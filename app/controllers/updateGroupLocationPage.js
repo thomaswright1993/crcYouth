@@ -1,6 +1,7 @@
-angular.module('indexApp').controller('GroupsCtrl', function($scope, $http, $routeParams) {
-    var map = undefined;
-    var mapProp = {
+var clickMarker;
+var map;
+angular.module('indexApp').controller('UpdateGroupLocationCtrl', function($scope, $http, $routeParams) {
+    var mapProp = {//Google Map SetUp
             center: new google.maps.LatLng(12,148),
             zoom: 2,
             mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -10,6 +11,17 @@ angular.module('indexApp').controller('GroupsCtrl', function($scope, $http, $rou
     } else {
         map = new google.maps.Map(document.getElementsByClassName("googleMap")[1], mapProp);
     }
+
+    //For clicking and setting long/lat
+    google.maps.event.addListener(map, 'click', function(event) {
+        if (clickMarker !== undefined) {
+            clickMarker.setMap(null);
+        }
+        clickMarker = new google.maps.Marker({position: event.latLng, icon: '/images/newPin.png', map: map});
+        document.getElementById("latitude").value = clickMarker.position.lat();
+        document.getElementById("longitude").value = clickMarker.position.lng();
+    });
+
     $scope.groups = []; // Getting groups data from the db
     var appendString = "";
     if($routeParams.searchValue !== undefined){
@@ -46,6 +58,7 @@ angular.module('indexApp').controller('GroupsCtrl', function($scope, $http, $rou
             });
             marker.setMap(map);
         }
+
         console.log($scope.groups);
     }).error(function (err){
         console.log(err);
@@ -61,11 +74,36 @@ function findGroups() {
     }
 }
 
-function mapsLoaders(){
-    var mapDiv = document.getElementById("googleMap");
-    if(mapDiv.style.display === "none"){
-        mapDiv.style.display = "block";
+function clickTab(clickedTab) {
+    var tabs = document.getElementById("tabDivs").children;
+    for (var i = 0; i < tabs.length; i++){
+        tabs[i].style.display = "none";
+        document.getElementById(tabs[i].id+"Header" ).className = "";
+    }
+    document.getElementById(clickedTab).style.display = "inline";
+    document.getElementById(clickedTab+"Header").className = "active";
+}
+
+function updateMap(){
+    var lat = document.getElementById("latitude");
+    var long = document.getElementById("longitude");
+    lat.value = lat.value.replace(/[^\d.-]/g, '');
+    long.value = long.value.replace(/[^\d.-]/g, '');
+
+    var latlng;
+    if (clickMarker !== undefined) {
+        if (lat.value === '' || lat.value === '-'){
+            lat.value = clickMarker.position.lat();
+        }
+        if (long.value === '' || long.value === '-'){
+            long.value = clickMarker.position.lng();
+        }
+
+        latlng = new google.maps.LatLng(parseFloat(lat.value), parseFloat(long.value));
+        clickMarker.setPosition(latlng);
+        console.log(clickMarker.position);
     } else {
-        mapDiv.style.display = "none";
+        latlng = new google.maps.LatLng(parseFloat(lat.value), parseFloat(long.value));
+        clickMarker = new google.maps.Marker({position: latlng, icon: '/images/newPin.png', map: map});
     }
 }

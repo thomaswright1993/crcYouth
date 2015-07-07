@@ -4,7 +4,7 @@
         <p>{{ greeting }}</p>
     </div>
     <div class="jumbotron">
-         <form class="form-horizontal" action="/submitGroup" method="post"
+         <form class="form-horizontal" enctype="multipart/form-data" action="/submitGroup" method="post"
               onKeyUp="checkForm()" onSubmit="return checkUniqueValues()" id="groupCreateForm">
 
                 <div id="errorMessage" ng-if="message.length > 0">

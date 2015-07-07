@@ -1,5 +1,9 @@
 @import url(http://fonts.googleapis.com/css?family=Antic+Slab);
 
+html {
+    overflow-y:scroll;
+}
+
 body{
 	background: #DAE2DB !important;
 	font-size: 14px !important;
@@ -11,6 +15,28 @@ h1,h2,h3,h4,h5,h6,p {
 
 h1{
     font-family: 'Antic Slab', serif;
+}
+
+a:hover {
+    cursor:pointer;
+}
+
+a {
+    text-decoration: none;
+}
+.a2{
+    color: #490094
+}
+.a2:hover {
+    text-decoration: none;
+}
+
+.a3{
+    color: #968aff
+}
+.a3:hover {
+    text-decoration: none;
+    color: #968aff
 }
 
 .page.ng-enter{
@@ -82,4 +108,11 @@ h1{
 
 #navigation > li#sub:hover ul {
     top: 1em;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover {
+    background-color: #1d003b;
+}
+.nav-pills > li > a {
+    background-color: #ffffff;
 }
