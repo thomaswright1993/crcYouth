@@ -1,5 +1,6 @@
 angular.module('indexApp').controller('ResourceCtrl', function($scope, $http, $routeParams){
-    $scope.resources = []; // Getting groups data from the db
+    $scope.resources = []; // Getting resource data from the db
+
     var appendString = "";
     if($routeParams.searchValue !== undefined){
         appendString = "~" + $routeParams.searchValue;

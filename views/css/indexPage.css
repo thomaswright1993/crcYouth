@@ -21,6 +21,10 @@ a:hover {
     cursor:pointer;
 }
 
+h3 .fa{
+    font-size: 120%;
+}
+
 a {
     text-decoration: none;
 }
@@ -37,6 +41,11 @@ a {
 .a3:hover {
     text-decoration: none;
     color: #968aff
+}
+
+.jumbotron{
+    background: url('/images/crcYthSPLASHBACKnoTEXT.png');
+    background-size: 100%; color: #ffffff;
 }
 
 .page.ng-enter{

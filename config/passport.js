@@ -32,10 +32,10 @@ module.exports = function(passport) {
             passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
         },
         function(req, email, password, done) {
-
+            email = email.toLowerCase();
             // asynchronous
             process.nextTick(function() {
-                User.findOne({ 'local.email' :  email.toLowerCase() }, function(err, user) {
+                User.findOne({ 'local.email' :  email }, function(err, user) {
                     if (err)
                         return done(err);
                     if (!user)
@@ -73,13 +73,16 @@ module.exports = function(passport) {
 
                     // check to see if there's already a user with that email
                     if (existingUser)
-                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                        return done(null, false, req.flash('loginMessage', 'That email is already taken.'));
 
                     //  If we're logged in, we're connecting a new local account.
                     if(req.user) {
                         var user            = req.user;
+                        user.name           = req.body.name;
+                        user.setAccessLevel("public");
                         user.local.email    = email.toLowerCase();
                         user.local.password = user.generateHash(password);
+
                         user.save(function(err) {
                             if (err)
                                 throw err;
@@ -90,7 +93,8 @@ module.exports = function(passport) {
                     else {
                         // create the user
                         var newUser            = new User();
-
+                        newUser.name           = req.body.name;
+                        newUser.setAccessLevel("public");
                         newUser.local.email    = email.toLowerCase();
                         newUser.local.password = newUser.generateHash(password);
 

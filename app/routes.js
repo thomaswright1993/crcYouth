@@ -7,7 +7,7 @@ module.exports = function(app, passport) {
     });
 
     // PROFILE SECTION =========================
-    app.get('/getProfile', isLoggedIn, function (req, res) {
+    app.get('/getProfile', checkAccessLevel(1), function (req, res) {
         var user = req.user;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(user));
@@ -31,10 +31,6 @@ module.exports = function(app, passport) {
         res.end(JSON.stringify(message));
     });
 
-
-
-
-
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/#profile', // redirect to the secure profile section
@@ -45,14 +41,17 @@ module.exports = function(app, passport) {
 
     // SIGNUP =================================
     // show the signup form
-    app.get('/signup', function (req, res) {
-        res.render('signup.ejs', { message: req.flash('loginMessage') });
+    app.get('/signUp', function (req, res) {
+        res.setHeader('Content-Type', 'application/json');
+        var message = req.flash('loginMessage');
+        console.log(req.flash('loginMessage'));
+        res.end(JSON.stringify(message));
     });
 
     // process the signup form
-    app.post('/signup', passport.authenticate('local-signup', {
+    app.post('/signUp', passport.authenticate('local-signup', {
         successRedirect: '/#profile', // redirect to the secure profile section
-        failureRedirect: '/#signup', // redirect back to the signup page if there is an error
+        failureRedirect: '/#signUp', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }));
 
@@ -63,7 +62,7 @@ module.exports = function(app, passport) {
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
             successRedirect: '/#profile',
-            failureRedirect: '/'
+            failureRedirect: '/#/'
         }));
 
 //  =============================================================================
@@ -119,7 +118,7 @@ module.exports = function(app, passport) {
 //  =============================================================================
     var Resource = require('../app/models/resource');
 
-    app.get('/getResources/:i', function (req, res) {
+    app.get('/getResources/:i', checkAccessLevel(3), function (req, res) {
         var resourceData = [];
         var cursorPosition = req.params.i.split(':')[1];
         Resource.find().count(function(error, counter){
@@ -143,19 +142,31 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/getResources~:searchValue/:i', function (req, res) {
+    app.get('/getResources~:searchValue/:i', checkAccessLevel(3), function (req, res) {
         var resourceData = [];
-        var cursorPosition = req.params.i;
-        Resource.find({title: new RegExp(req.params.searchValue, "i")}, function (err, resources) {
-            for (var i = 0; i < resources.length; i++) {
-                resourceData.push(resources[i].getPreview());
+        var cursorPosition = req.params.i.split(':')[1];
+        Resource.find({title: new RegExp(req.params.searchValue, "i")}).count(function(error, counter){
+            var limitCount = 20;
+            var offset = counter - cursorPosition;
+            if (offset <= 20){
+                if(offset > 0) limitCount = offset;
+                else limitCount = 0;
             }
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(resourceData));
-        }).limit(20).skip(cursorPosition); //i being increments of 20 for each page;;
+            if (cursorPosition < counter + 20) {
+                Resource.find({title: new RegExp(req.params.searchValue, "i")},
+                    function (err, resources) { //callback
+                        for (var i = 0; i < resources.length; i++) {
+                            resourceData.push(resources[i].getPreview());
+                        }
+                        res.setHeader('Content-Type', 'application/json');
+                        res.end(JSON.stringify(resourceData));
+                    }
+                ).sort({date:-1}).skip(cursorPosition).limit(limitCount);////////////////////////////////////WHY NO SORTING?!?!?!?!?!?!?!?!?!?!?!? GOTTA LEAVE IT FOR NOW!!!!
+            }
+        });
     });
 
-    app.get('/getResources^:searchTag/:i', function (req, res) {
+    app.get('/getResources^:searchTag/:i', checkAccessLevel(3), function (req, res) {
         var resourceData = [];
         var cursorPosition = req.params.i;
         Resource.find({tags: new RegExp(req.params.searchTag, "i")}, function (err, resources) {
@@ -167,7 +178,7 @@ module.exports = function(app, passport) {
         }).limit(20).skip(cursorPosition); //i being increments of 20 for each page;;
     });
 
-    app.get('/getResource/:id', function (req, res) {
+    app.get('/getResource/:id', checkAccessLevel(3), function (req, res) {
         var resourceData = [];
         Resource.find({_id: req.params.id}, function (err, resources) {
             resourceData.push(resources[0].getFull());
@@ -176,6 +187,32 @@ module.exports = function(app, passport) {
         });
     });
 
+    app.post('/addResourceLike/:id', checkAccessLevel(3), function(req, res){
+        var resourceLikes = [];
+        Resource.find({_id: req.params.id}, function (err, resources) {
+            resourceLikes.push(resources[0].addLike(req.user._id));
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(resourceLikes));
+        });
+    });
+
+    app.post('/removeResourceLike/:id', checkAccessLevel(3), function(req, res){
+        var resourceLikes = [];
+        Resource.find({_id: req.params.id}, function (err, resources) {
+            resourceLikes.push(resources[0].removeLike(req.user._id));
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(resourceLikes));
+        });
+    });
+
+    app.get('/checkResourceLikes/:id', checkAccessLevel(3), function(req, res){
+        var resourceLikes = [];
+        Resource.find({_id: req.params.id}, function (err, resources) {
+            resourceLikes.push(resources[0].checkLikes(req.user._id));
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(resourceLikes));
+        });
+    });
 
 //  =============================================================================
 //  Group Database Query Routes =================================================
@@ -240,10 +277,13 @@ module.exports = function(app, passport) {
 //    });
 };
 
-// route middleware to ensure user is logged in
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/#/');
-}
+// route middleware to ensure user is logged in and of appropriate level
+var checkAccessLevel = function(accessLevel) {
+    return function(req, res, next) {
+        if (req.isAuthenticated() && req.user.security_level >= accessLevel) {
+            return next();
+        }
+//        console.log("Redirect");
+        //res.redirect('/#/'); ///////////////////////////////////////////////////////////////THIS SHOULD REDIRECT BUT IT ONLY CONSOLE.LOGS THE HTML OF /#/ INTO THE BROWSER
+    };
+};

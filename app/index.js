@@ -2,8 +2,8 @@ app = angular.module('indexApp',['ngRoute', 'ngAnimate', 'infinite-scroll']);
 app.config(function($routeProvider, $locationProvider){
       $routeProvider
           .when('/',{
-                templateUrl: '/html/home.html',
-                controller: 'MainCtrl'
+              templateUrl: '/html/home.html',
+              controller: 'MainCtrl'
           })
           .when('/groups',{
               templateUrl: '/html/groups.html',
@@ -12,6 +12,10 @@ app.config(function($routeProvider, $locationProvider){
           .when('/login',{
               templateUrl: '/html/login.html',
               controller: 'LoginCtrl'
+          })
+          .when('/signUp',{
+              templateUrl: '/html/signUp.html',
+              controller: 'SignUpCtrl'
           })
           .when('/events',{
               templateUrl: '/html/events.html',
