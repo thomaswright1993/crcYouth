@@ -6,7 +6,40 @@
                 <input type="text" class="center-block form-control input-lg" placeholder="Search through the resources" id="resSearch">
                 <span class="input-group-btn"><button class="btn btn-lg btn-primary" type="submit" onclick="findResources()"><span class="glyphicon glyphicon-search"></span></button></span>
             </div>
+            <button class="btn btn-lg btn-primary" onclick="rotateTypes()" style="display: inline"><span id="innerGlyph" class="glyphicon glyphicon-asterisk"></span></button>
         </form>
+
+        <script>
+            var count = 0;
+            function rotateTypes(){
+                switch(count){
+                    case 0:{
+                        document.getElementById("innerGlyph").className = "fa fa-futbol-o";
+                        count++;
+                        break;
+                    }
+                    case 1:{
+                        document.getElementById("innerGlyph").className = "glyphicon glyphicon-bullhorn";
+                        count++;
+                        break;
+                    }
+                    case 2:{
+                        document.getElementById("innerGlyph").className = "glyphicon glyphicon-music";
+                        count++;
+                        break;
+                    }
+                    case 3:{
+                        document.getElementById("innerGlyph").className = "glyphicon glyphicon-folder-open";
+                        count++;
+                        break;
+                    }
+                    case 4:{
+                        document.getElementById("innerGlyph").className = "glyphicon glyphicon-asterisk";
+                        count = 0;
+                    }
+                }
+            }
+        </script>
     </div>
     <div infinite-scroll="loadMore()" infinite-scroll-distance="0">
         <div ng-if="resources.length === 0">
@@ -27,7 +60,9 @@
                         <h4>
                             <span class="glyphicon glyphicon-user"></span> {{resource.writerID}}
                             <div  ng-if="resource.tags.length > 0" style="display: inline">
-                                - <span class="glyphicon glyphicon-tag"></span> <a class="a2" ng-repeat="tag in resource.tags|limitTo:3" href="/#resource^{{tag}}"> #{{tag}}</a>
+                                - <span class="glyphicon glyphicon-tag"></span>
+                                <a class="a2" ng-repeat="tag in resource.tags|limitTo:3" href="/#resources~{{tag.value}}"> #{{tag.value}}</a>
+                                <a class="a2" ng-if="resource.tags.length > 3" href="/#resource/{{resource.id}}"> •••</a>
                             </div>
                         </h4>
                     </div>

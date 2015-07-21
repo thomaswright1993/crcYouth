@@ -9,6 +9,8 @@ module.exports = function(app, passport) {
     // PROFILE SECTION =========================
     app.get('/getProfile', checkAccessLevel(1), function (req, res) {
         var user = req.user;
+        if (user.imagePath === undefined)
+            user.imagePath = "noProfilePic.jpg";
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(user));
     });
@@ -41,19 +43,41 @@ module.exports = function(app, passport) {
 
     // SIGNUP =================================
     // show the signup form
-    app.get('/signUp', function (req, res) {
+    app.get('/signup', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         var message = req.flash('loginMessage');
         console.log(req.flash('loginMessage'));
         res.end(JSON.stringify(message));
     });
 
-    // process the signup form
-    app.post('/signUp', passport.authenticate('local-signup', {
-        successRedirect: '/#profile', // redirect to the secure profile section
-        failureRedirect: '/#signUp', // redirect back to the signup page if there is an error
-        failureFlash: true // allow flash messages
-    }));
+////    process the signup form
+//    app.post('/signup/:id', passport.authenticate('local-signup', {
+//            successRedirect: '/#profile', // redirect to the secure profile section
+//            failureRedirect:  '/#signUp/AriseYouth', // redirect back to the signup page if there is an error
+//            failureFlash: true // allow flash messages
+//    }));
+
+    app.post('/signUp/:id', function(req, res, next) {
+        passport.authenticate('local-signup', function(err, user, info) {
+            if (err) { return next(err); }
+            // Redirect if it fails
+            if (!user) { return res.redirect('/#signUp/'+req.params.id); }
+            req.logIn(user, function(err) {
+                if (err) { return next(err); }
+                // Redirect if it succeeds
+                return res.redirect('/#profile');
+            });
+        })(req, res, next);
+    });
+//    app.post('/signUp/:id', function(req) {
+//        var failureUrl = '/#signUp/'+req.params.id;
+//        passport.authenticate('local-signup',{
+//            successRedirect: '/#profile',
+//            failureRedirect: failureUrl,
+//            failureFlash : true
+//        })
+//    });
+
 
     // send to facebook to do the authentication
     app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
@@ -145,7 +169,8 @@ module.exports = function(app, passport) {
     app.get('/getResources~:searchValue/:i', checkAccessLevel(3), function (req, res) {
         var resourceData = [];
         var cursorPosition = req.params.i.split(':')[1];
-        Resource.find({title: new RegExp(req.params.searchValue, "i")}).count(function(error, counter){
+        var regEX = new RegExp(req.params.searchValue, "i");
+        Resource.find({ $or: [{ "tags.value" : regEX},{ "title" : regEX}]}).count(function(error, counter){
             var limitCount = 20;
             var offset = counter - cursorPosition;
             if (offset <= 20){
@@ -153,7 +178,7 @@ module.exports = function(app, passport) {
                 else limitCount = 0;
             }
             if (cursorPosition < counter + 20) {
-                Resource.find({title: new RegExp(req.params.searchValue, "i")},
+                Resource.find({ $or: [{ "tags.value" : regEX},{ "title" : regEX}]},
                     function (err, resources) { //callback
                         for (var i = 0; i < resources.length; i++) {
                             resourceData.push(resources[i].getPreview());
@@ -168,9 +193,9 @@ module.exports = function(app, passport) {
 
     app.get('/getResources^:searchTag/:i', checkAccessLevel(3), function (req, res) {
         var resourceData = [];
-        var cursorPosition = req.params.i;
         Resource.find({tags: new RegExp(req.params.searchTag, "i")}, function (err, resources) {
             for (var i = 0; i < resources.length; i++) {
+        var cursorPosition = req.params.i;
                 resourceData.push(resources[i].getPreview());
             }
             res.setHeader('Content-Type', 'application/json');
@@ -245,7 +270,9 @@ module.exports = function(app, passport) {
     app.get('/getGroup/:id', function (req, res) {
         var groupData = [];
         Group.find({id: req.params.id}, function (err, groups) {
-            groupData.push(groups[0].getPreview());
+            if(groups[0] !== undefined){
+                groupData.push(groups[0].getFull());
+            }
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(groupData));
         });

@@ -16,7 +16,7 @@
                         <span class="glyphicon glyphicon-calendar"></span> {{resource[0].date.split(' ')[1]+" "+resource[0].date.split(' ')[2]+" "+resource[0].date.split(' ')[3]}} -
                         <span class="glyphicon glyphicon-user"></span> {{resource[0].writerID}}
                         <div  ng-if="resource[0].tags.length > 0" style="display: inline">
-                            - <span class="glyphicon glyphicon-tag"></span> <a class="a2"  ng-repeat="tag in resource[0].tags" href="/#resource^{{tag}}"> #{{tag}}</a>
+                            - <span class="glyphicon glyphicon-tag"></span> <a class="a2"  ng-repeat="tag in resource[0].tags" href="/#resources~{{tag.value}}"> #{{tag.value}}</a>
                         </div>
                     </h4>
                     <!--<h3 style="display: inline">-->

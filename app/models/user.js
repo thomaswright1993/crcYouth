@@ -8,21 +8,22 @@ var userSchema = mongoose.Schema({
     security_level   : String,
     profile_pic_path : String,
     gender           : String,
+    imagePath        : String,
     local            : {
-        email        : String,
-        password     : String
+        email           : String,
+        password        : String
     },
     facebook         : {
-        id           : String,
-        token        : String,
-        email        : String
+        id              : String,
+        token           : String,
+        email           : String
     },
     group            : {
-        _id         : String,
-        city        : String,
-        country     : String
+        id              : String,
+        name            : String,
+        city            : String,
+        country         : String
     }
-
 });
 
 
@@ -70,13 +71,20 @@ userSchema.methods.setAccessLevel = function (accessLevel) {
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);
 
-//mongoose.model('User', userSchema).find({}, function (err, users) {
-//
-//        if (err) return console.error(err);
-//        for(var i = 0; i < users.length; i++){
-//            if (users[i].local.email ===  "jesus@hotmail.com") {
+mongoose.model('User', userSchema).find({}, function (err, users) {
+
+        if (err) return console.error(err);
+        for(var i = 0; i < users.length; i++){
+            if (users[i].local.email ===  "thomaswright1993@hotmail.com") {
+//                  users[i].imagePath = "thomas.jpg";
 //                users[i].setAccessLevel("siteAdmin");
-//                users[i].save()
-//            }
-//        }
-//});
+                users[i].group = {
+                    id              : 'AriseYouth',
+                    name            : 'Arise Youth',
+                    country         : 'Australia',
+                    city            : 'Cairns'
+                };
+                users[i].save()
+            }
+        }
+});

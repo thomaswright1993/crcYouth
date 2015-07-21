@@ -1,8 +1,12 @@
 <div class="container">
-    <div class="jumbotron" style="height : 394px; background-image: url('/images/torque.jpg'); background-size:100%;">
-        <a style="text-decoration: none">
-            <h1 style="margin: 0 0 40px 0;"><b>{{group[0].name}}</b></h1>
+    <div class="jumbotron" style="height : 394px; background-image: url('/images/{{group[0].splashBackPath}}'); background-size:100%;">
+        <a ng-if="user.name === undefined" href="/#signUp/{{ group[0].id }}" class="btn btn-primary btn-sm" style="float:right">
+            Join Group
         </a>
+        <a style="text-decoration: none">
+            <h1 style="margin: 0 0 40px 0; text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000; color: white;"><b>{{group[0].name}}</b></h1>
+        </a>
+
         <div style="border:1px solid #000;float: left; margin-right: 1em;">
             <img style="border:2px solid #ffffff; " width="160" height="160" src="/images/{{group[0].imagePath}}"/>
         </div>
@@ -10,21 +14,90 @@
             <br>
             <br>
             <h2 style="color: #ffffff; text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000; margin-bottom: 0;"><b>{{group[0].city}} - {{group[0].country}}</b></h2>
-            <h1 style="color: #ffffff; text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000; font-size: 350%; margin-top: 0;"><a class="a3"><b>Cairns Family Church</b></a></h1>
+            <h1 style="color: #ffffff; text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000; font-size: 350%; margin-top: 0;"><a class="a3" href="{{group[0].church.websiteAddress}}"><b>{{group[0].church.name}}</b></a></h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
-            <!--<div class="panel panel-default">-->
-            <!--<div class="panel-body">-->
-            <ul class="nav nav-pills nav-stacked">
-                <li id="locationHeader"><a onclick="clickTab('location')"><b>Location</b></a></li>
-                <li id="menu1Header"><a onclick="clickTab('menu1')"><b>Profile Picture</b></a></li>
-                <li id="bannerPhotoHeader"><a onclick="clickTab('bannerPhoto')"><b>Banner Photo</b></a></li>
-                <li id="socialMediaHeader"><a onclick="clickTab('socialMedia')"><b>Social Media</b></a></li>
+            <ul class="nav nav-pills nav-stacked ">
+                <li ng-if="group[0].leaders.length > 0" id="leadersHeader" class="active">
+                    <a onclick="clickHeader('leaders')" style="font-size: 150%">
+                        <b>YOUTH LEADERS</b>
+                    </a>
+                    <li ng-if="group[0].leaders.length > 0" id="leaders" style="display: inline">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div ng-repeat="leader in group[0].leaders" style="clear: both">
+                                    <a href="/#{{leader._id}}" style="float: left">
+                                        <img style="border:1px solid rgba(0, 0, 0, 0.15);" width="40" height="40" src="/images/{{leader.imagePath}}"/>
+                                    </a>
+                                    <div style="padding-left: 15px;float: left;">
+                                        <a href="/#{{leader._id}}" style="padding-top:0;margin-top: 0; font-size: 18px"><b>{{leader.name}}</b></a>
+                                        <p style="font-size: 12px">{{leader.title}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </li>
+
+                <li id="serviceHeader" class="active">
+                    <a onclick="clickHeader('service')" style="font-size: 150%">
+                        <b>SERVICE TIMES</b>
+                    </a>
+                    <li id="service" style="display: inline">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                Needs a time service card
+                            </div>
+                        </div>
+                    </li>
+                </li>
+
+                <li id="menu2Header" class="active">
+                    <a onclick="clickHeader('menu2')" style="font-size: 150%">
+                        <b>SOCIAL MEDIA LINKS</b>
+                    </a>
+                    <li id="menu2" style="display: inline">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <a class="a3" style="font-size: 150%">
+                                    <b><span class="fa fa-facebook-square"></span> FACEBOOK</b>
+                                </a>
+                                <b>-</b>
+                                <a class="a3" style="font-size: 150%">
+                                    <b> <span class="fa fa-twitter"></span> TWITTER</b>
+                                </a>
+                                <b>-</b>
+                                <a class="a3" style="font-size: 150%">
+                                    <b> <span class="fa fa-instagram"></span> INSTAGRAM</b>
+                                </a>
+                                <b>-</b>
+                                <a class="a3" style="font-size: 150%">
+                                    <b> <span class="fa fa-youtube-play"></span> YOUTUBE</b>
+                                </a>
+                                <b>-</b>
+                                <a class="a3" style="font-size: 150%">
+                                    <b> <span class="fa fa-google-plus-square"></span> GOOGLE PLUS</b>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </li>
+
+                <li id="mapHeader" class="active">
+                    <a onclick="clickHeader('map')" style="font-size: 150%">
+                        <b>HQ MAP</b>
+                    </a>
+                    <li id="map" style="display: inline">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                No map yet
+                            </div>
+                        </div>
+                    </li>
+                </li>
             </ul>
-            <!--</div>-->
-            <!--</div>-->
         </div>
         <!--<div class="col-md-4">-->
             <!--<div class="panel panel-default">-->
@@ -50,7 +123,7 @@
         <!--</div>-->
         <div class="col-md-8">
             <div class="panel panel-default">
-                <div class="panel-heading"><h3>Group News</h3></div>
+                <div class="panel-heading"><h3>Group Feed</h3></div>
                 <div class="panel-body">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
                     Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis

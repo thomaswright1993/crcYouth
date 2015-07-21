@@ -6,7 +6,7 @@ var ID = mongoose.model('ID', idSchema);
 var resourceSchema = mongoose.Schema({
     title           : String,
     body            : String,
-    tags            : {},
+    tags            : [],
     writerID        : String,
     dateWritten     : Date,
     likes           : [idSchema]
@@ -82,12 +82,29 @@ resourceSchema.statics.getAll = function(callback) {
 module.exports = mongoose.model('Resource', resourceSchema);
 
 
+// NEED A CHECKER TO REMOVE #'s ~'s and :'s when tag or title is inputted  =============================================================================
+
 //==================Create Resource Here============================
 //var Resource = mongoose.model('Resource', resourceSchema);
 //for (var o = 0; o < 75; o++) {
-//    var tag1 = "Awesome";
-//    var tag2 = "Epic";
-//    var tags = [tag1, tag2, o];
+//    var tag1 = {value: "Awesome"};
+//    var tag2 = {value: "Epic"};
+//    var tag3 = {value: o};
+//    var tags = [tag1, tag2, tag3];
+//    if (o % 5 === 1){
+//        tags.push({value: "Rare"});
+//    }
+//    if (o % 20 === 1){
+//        tags.push({value: "A"});
+//        tags.push({value: "B"});
+//        tags.push({value: "Hello"});
+//        tags.push({value: "World"});
+//        tags.push({value: "TAG WITH SPACE"});
+//        tags.push({value: "RareTAG"});
+//        tags.push({value: "SUPERLONGTAGTHATISSUPERSUPERLONGANDOBNOXIOUS"});
+//        tags.push({value: "SmallTag"});
+//
+//    }
 //    var newResource = new Resource({
 //        title: 'Article '+o,
 //        tags: tags,

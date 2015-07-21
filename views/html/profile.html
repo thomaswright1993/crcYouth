@@ -1,9 +1,14 @@
 <div class="container">
 
-    <div class="page-header text-center">
-        <h1>Profile Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    <div class="jumbotron">
+        <div style="border:1px solid #000;float: left; margin-right: 60px">
+            <img style="border:2px solid #ffffff;" width="160" height="160" src="/images/{{ user.imagePath }}"/>
+        </div>
+        <h1 contenteditable="true" style="outline: none">{{ user.name }}</h1>
+        <a onclick="" style="clear: both" class="btn btn-primary btn-sm">Save Changes</a>
+        <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
     </div>
+
 
     <div class="row">
 
@@ -14,11 +19,13 @@
 
                 <div ng-if="user.local.email !== undefined">
                     <p>
-                        <strong>ID</strong>: {{ user._id}}<br>
+                        <strong>ID</strong>: {{ user._id }}<br>
                         <strong>Full Name</strong>: {{ user.name }}<br>
                         <strong>Email Address</strong>: {{ user.local.email }}<br>
                         <strong>Security Level</strong>: {{user.security_level}}<br>
                         <strong>Encrypted Password</strong>: {{ user.local.password}}
+                        <strong>Group Location</strong>: {{ user.group.city }} - {{ user.group.country }}
+                        <strong>Gender</strong>: {{ user.gender }}
                     </p>
 
                     <a href="/unlink/local" class="btn btn-default">Unlink</a>

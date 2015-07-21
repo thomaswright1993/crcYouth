@@ -13,7 +13,7 @@ app.config(function($routeProvider, $locationProvider){
               templateUrl: '/html/login.html',
               controller: 'LoginCtrl'
           })
-          .when('/signUp',{
+          .when('/signUp/:groupID',{
               templateUrl: '/html/signUp.html',
               controller: 'SignUpCtrl'
           })

@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="jumbotron text-center">
+        <h1><span class="fa fa-sign-in"></span> Sign Up</h1>
+        <p>{{ greeting }}</p>
+
+        <div ng-if="message.length > 0">
+            <div class="alert alert-danger">{{ message }}</div>
+        </div>
+
+        <!-- SIGN UP FORM -->
+        <form class="form-horizontal" action="/signUp" method="post" onKeyUp="checkForm()" onSubmit="return checkSubmitForm()" id="signUpForm">
+
+            <div class="control-group"> <!-- Password input-->
+                <label class="control-label" for="name">Full Name</label>
+                <div class="controls">
+                    <input id="name" name="name" type="text" placeholder="Jesus Christ" class="input-xxlarge">
+                </div>
+            </div>
+
+            <div class="control-group"> <!-- eMail input-->
+                <label class="control-label" for="email">Email Address</label>
+                <div class="controls">
+                    <input id="email" name="email" type="text" placeholder="jc@gmail.com" class="input-xxlarge">
+                </div>
+            </div>
+
+            <div class="control-group"> <!-- Password input-->
+                <label class="control-label" for="password">Password</label>
+                <div class="controls">
+                    <input id="password" name="password" type="password" placeholder="********" class="input-xxlarge">
+                </div>
+            </div>
+
+            <br>
+
+            <div class="control-group"> <!-- Buttons -->
+                <div class="controls">
+                    <a href="/auth/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
+
+                    <button id="signUpButton" type="submit" name="signUpButton" class="btn btn-primary" ng-click="submitPassword()">Sign Up</button>
+                </div>
+            </div>
+        </form>
+
+        <hr>
+
+        <p>Already have an account? <a href="/#login">Login</a></p>
+
+    </div>
+</div>

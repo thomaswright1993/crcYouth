@@ -5,6 +5,7 @@ angular.module('indexApp').controller('ProfileCtrl', function($scope, $http){
             window.location.replace("/#login")
         } else {
             $scope.user = results;
+            console.log(results)
         }
     }).error(function (err) {
         console.log(err);

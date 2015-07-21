@@ -43,9 +43,35 @@ a {
     color: #968aff
 }
 
+/*.panel-heading{*/
+    /*background: url('/images/crcYthSPLASHBACKnoTEXT.png');*/
+    /*background-size: 100%;*/
+/*}*/
+
+/*.panel-heading h4{*/
+    /*color: white;*/
+/*}*/
+
+/*.panel-heading .a2{*/
+    /*color: #0b948a*/
+/*}*/
+
 .jumbotron{
     background: url('/images/crcYthSPLASHBACKnoTEXT.png');
-    background-size: 100%; color: #ffffff;
+    background-size: 100%;
+    color: #ffffff;
+}
+
+.profilePic img{
+    padding:0;
+    margin: 0 5px 0 0;
+    border: 1px solid white;
+    width: 20px;
+    height: 20px;
+}
+
+.profilePic:hover img{
+    border: 1px solid #06F;
 }
 
 .page.ng-enter{

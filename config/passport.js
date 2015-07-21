@@ -79,10 +79,16 @@ module.exports = function(passport) {
                     if(req.user) {
                         var user            = req.user;
                         user.name           = req.body.name;
+                        user.gender         = req.body.gender;
                         user.setAccessLevel("public");
                         user.local.email    = email.toLowerCase();
-                        user.local.password = user.generateHash(password);
-
+                        user.local.password = user.generateHash(password)
+                        user.group = {
+                            id: req.body.groupID,
+                            name: req.body.groupName,
+                            country: req.body.groupCountry,
+                            city: req.body.groupCity
+                        };
                         user.save(function(err) {
                             if (err)
                                 throw err;
@@ -94,14 +100,19 @@ module.exports = function(passport) {
                         // create the user
                         var newUser            = new User();
                         newUser.name           = req.body.name;
+                        newUser.gender         = req.body.gender;
                         newUser.setAccessLevel("public");
                         newUser.local.email    = email.toLowerCase();
                         newUser.local.password = newUser.generateHash(password);
-
+                        newUser.group = {
+                            id: req.body.groupID,
+                            name: req.body.groupName,
+                            country: req.body.groupCountry,
+                            city: req.body.groupCity
+                        };
                         newUser.save(function(err) {
                             if (err)
                                 throw err;
-
                             return done(null, newUser);
                         });
                     }
