@@ -6,19 +6,9 @@
                     <div style="float: right">
                         <button id="likeButton" class="btn btn-lg" style="float: right; margin-top: 5px; outline: none" onclick="like()">
                             <!--<span class="glyphicon glyphicon-thumbs-up"></span>-->
-                            <span class="fa fa-thumbs-o-up"></span>
+                            <span class="fa fa-thumbs-o-up">{{likeCount}}</span>
                         </button>
                     </div>
-                    <script>
-                        function like(){
-                            var button = document.getElementById("likeButton");
-                            if (button.className === "btn btn-lg bg-success"){
-                                button.className = "btn btn-lg";
-                            } else {
-                                button.className = "btn btn-lg bg-success";
-                            }
-                        }
-                    </script>
                     <a style="text-decoration: none">
                         <h1 style="margin: 0 0 40px 0; display: inline"><b>{{resource[0].title}}</b></h1>
                     </a>
@@ -26,25 +16,22 @@
                         <span class="glyphicon glyphicon-calendar"></span> {{resource[0].date.split(' ')[1]+" "+resource[0].date.split(' ')[2]+" "+resource[0].date.split(' ')[3]}} -
                         <span class="glyphicon glyphicon-user"></span> {{resource[0].writerID}}
                         <div  ng-if="resource[0].tags.length > 0" style="display: inline">
-                            - <span class="glyphicon glyphicon-tag"></span> <a class="a2"  ng-repeat="tag in resource[0].tags" href="/#resource^{{tag}}"> #{{tag}}</a>
+                            - <span class="glyphicon glyphicon-tag"></span> <a class="a2"  ng-repeat="tag in resource[0].tags" href="/#resources~{{tag.value}}"> #{{tag.value}}</a>
                         </div>
                     </h4>
-                    <h3 style="display: inline">
-                        <span class="fa fa-retweet"></span>
-                        <span class="fa fa-reply"></span>
-                        <span class="fa fa-shield"></span>
-                        <span class="fa fa-futbol-o"></span>
-                        <span class="fa fa-compass"></span>
-                        <span class="fa fa-user"></span>
-                        <span class="fa fa-user-plus"></span>
-                        <span class="fa fa-trash"></span>
-                        <span class="fa fa-sliders"></span>
-                        <span class="fa fa-map-marker"></span>
-                        <span class="glyphicon glyphicon-link"></span>
-                    </h3>
-
-
-
+                    <!--<h3 style="display: inline">-->
+                        <!--<span class="fa fa-retweet"></span>-->
+                        <!--<span class="fa fa-reply"></span>-->
+                        <!--<span class="fa fa-shield"></span>-->
+                        <!--<span class="fa fa-futbol-o"></span>-->
+                        <!--<span class="fa fa-compass"></span>-->
+                        <!--<span class="fa fa-user"></span>-->
+                        <!--<span class="fa fa-user-plus"></span>-->
+                        <!--<span class="fa fa-trash"></span>-->
+                        <!--<span class="fa fa-sliders"></span>-->
+                        <!--<span class="fa fa-map-marker"></span>-->
+                        <!--<span class="glyphicon glyphicon-link"></span>-->
+                    <!--</h3>-->
                 </div>
                 <div class="text-center panel-body" id="body">
                 </div>

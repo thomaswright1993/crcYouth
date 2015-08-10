@@ -1,15 +1,18 @@
 angular.module('indexApp').controller('GroupsCtrl', function($scope, $http, $routeParams) {
+
     var map = undefined;
     var mapProp = {
-            center: new google.maps.LatLng(12,148),
-            zoom: 2,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
+        center: new google.maps.LatLng(12,148),
+        zoom: 2,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
     if (document.getElementsByClassName("googleMap").length === 1){
         map = new google.maps.Map(document.getElementsByClassName("googleMap")[0], mapProp);
     } else {
         map = new google.maps.Map(document.getElementsByClassName("googleMap")[1], mapProp);
     }
+
     $scope.groups = []; // Getting groups data from the db
     var appendString = "";
     if($routeParams.searchValue !== undefined){
@@ -17,6 +20,10 @@ angular.module('indexApp').controller('GroupsCtrl', function($scope, $http, $rou
     }
 
     $http.get('/getGroups' + appendString).success(function (groupResults) {
+        if($routeParams.searchValue !== undefined){
+            document.getElementById("groupSearch").value = $routeParams.searchValue;
+        }
+
         for(var i = 0; i < groupResults.length; i++) {
             $scope.groups.push(groupResults[i]);
 
@@ -33,7 +40,7 @@ angular.module('indexApp').controller('GroupsCtrl', function($scope, $http, $rou
                 var contentString = "<div><a href='/#groups/" + this.group.id + "' style='float:left'>" +
                     "<img style='border:1px solid rgba(0,0,0,0.15);'width='80'height='80'src='/images/" + this.group.imagePath + "'/></a>" +
                     "<a href='/#groups/" + this.group.id + "' style='padding-top:0;margin-top: 0; font-size: 32px'><b>" + this.group.name + "</b></a>" +
-                    "<p style='font-size: 24px'>" + this.group.city + " - " + this.group.country +
+                    "<p style='font-size: 24px; color: #000000'  >" + this.group.city + " - " + this.group.country +
                     "</p></div>";
 
                 var infowindow = new google.maps.InfoWindow({position: this.position, content: contentString});
@@ -50,10 +57,16 @@ angular.module('indexApp').controller('GroupsCtrl', function($scope, $http, $rou
     }).error(function (err){
         console.log(err);
     });
+
+    $http.get('/getProfile').success(function (results) {
+        $scope.user = results
+    }).error(function (err) {
+        console.log(err);
+    });
 });
 
 function findGroups() {
-    var searchContents = document.getElementById("groupSearch").value;
+    var searchContents = document.getElementById("groupSearch").value.replace(/[#~:/]/g,'');
     if (searchContents === '') {
         window.location.href = '/#groups';
     } else {

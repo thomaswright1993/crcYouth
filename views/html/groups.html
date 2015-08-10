@@ -10,7 +10,7 @@
                     <input type="text" class="center-block form-control input-lg" placeholder="Find your youth group" id="groupSearch">
                     <span class="input-group-btn"><button class="btn btn-lg btn-primary" type="submit" onclick="findGroups()"><span class="glyphicon glyphicon-search"></span></button></span>
              </div>
-             <button class="btn btn-lg btn-primary col-sm-offset-1" onclick="mapsLoaders()" style="display: inline"><span class="glyphicon glyphicon-globe"></span></button>
+             <button class="btn btn-lg btn-primary" onclick="mapsLoaders()" style="display: inline"><span class="glyphicon glyphicon-globe"></span></button>
         </form>
 
 
@@ -32,10 +32,13 @@
                     <a href="/#groups/{{ group.id }}" style="float:left">
                         <img style="border:1px solid rgba(0, 0, 0, 0.15);" width="80" height="80" src="/images/{{group.imagePath}}"/>
                     </a>
+                    <a ng-if="user.name === undefined" href="/#signUp/{{ group.id }}" class="btn btn-primary btn-sm" style="float:right">
+                        Join Group
+                    </a>
                     <div>
                         <div style="padding-left: 15px; float: left">
                             <a href="/#groups/{{ group.id}}" style="padding-top:0;margin-top: 0; font-size: 32px"><b>{{group.name}}</b></a>
-                            <p style="font-size: 24px">{{group.city + " - " + group.country}}</p>
+                            <p style="font-size: 24px; margin: 0">{{group.city + " - " + group.country}}</p>
                         </div>
                     </div>
                 </div>

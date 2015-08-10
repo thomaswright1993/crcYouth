@@ -21,6 +21,10 @@ a:hover {
     cursor:pointer;
 }
 
+h3 .fa{
+    font-size: 120%;
+}
+
 a {
     text-decoration: none;
 }
@@ -37,6 +41,60 @@ a {
 .a3:hover {
     text-decoration: none;
     color: #968aff
+}
+
+/*.panel-heading{*/
+    /*background: url('/images/crcYthSPLASHBACKnoTEXT.png');*/
+    /*background-size: 100%;*/
+/*}*/
+
+/*.panel-heading h4{*/
+    /*color: white;*/
+/*}*/
+
+/*.panel-heading .a2{*/
+    /*color: #0b948a*/
+/*}*/
+
+.jumbotron{
+    background: url('/images/crcYthSPLASHBACKnoTEXT.png');
+    background-size: 100%;
+    color: #ffffff;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.textShadow{
+    text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;
+}
+
+.profilePic img{
+    padding:0;
+    margin: 0 5px 0 0;
+    border: 1px solid white;
+    width: 20px;
+    height: 20px;
+}
+
+.profilePic:hover img{
+    border: 1px solid #06F;
 }
 
 .page.ng-enter{

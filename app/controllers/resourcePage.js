@@ -1,14 +1,15 @@
 angular.module('indexApp').controller('ResourceCtrl', function($scope, $http, $routeParams){
-    $scope.resources = []; // Getting groups data from the db
+    $scope.resources = []; // Getting resource data from the db
+
     var appendString = "";
     if($routeParams.searchValue !== undefined){
         appendString = "~" + $routeParams.searchValue;
     }
-    if($routeParams.searchTag !== undefined){
-        appendString = "^" + $routeParams.searchTag;
-    }
 
     $http.get('/getResources' + appendString +"/:0").success(function (resResults) {
+        if($routeParams.searchValue !== undefined){
+            document.getElementById("resSearch").value = $routeParams.searchValue;
+        }
         for(var i = 0; i < resResults.length; i++) {
             $scope.resources.push(resResults[i]);
         }
@@ -46,7 +47,7 @@ var getNextPage;
 var check_scroll;
 
 function findResources() {
-    var searchContents = document.getElementById("resSearch").value;
+    var searchContents = document.getElementById("resSearch").value.replace(/[#~:/]/g,'');
     if (searchContents === '') {
         window.location.href = '/#resources';
     } else {
