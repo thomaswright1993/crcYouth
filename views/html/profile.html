@@ -48,7 +48,6 @@
 
         <!-- LOCAL INFORMATION -->
         <div class="col-sm-6">
-<<<<<<< HEAD
             <div class="panel panel-default">
                     <ul id="parent" class="nav nav-tabs panel-heading">
                         <li class="active"><a onclick="profileTab(this)"><strong>GROUP</strong></a></li>
@@ -72,21 +71,6 @@
                         <br>
                         <strong>You are a group Admin and have access to: <a href="/#updateGroup/{{user.group.id}}">Administrate {{group[0].name.toUpperCase()}}</a><br></strong>
                     </div>
-=======
-            <div class="well">
-                <h3><span class="glyphicon glyphicon-user"></span> Local</h3>
-
-                <div ng-if="user.local.email !== undefined">
-                    <p>
-                        <strong>ID</strong>: {{ user._id}}<br>
-                        <strong>Full Name</strong>: {{ user.name }}<br>
-                        <strong>Email Address</strong>: {{ user.local.email }}<br>
-                        <strong>Security Level</strong>: {{user.security_level}}<br>
-                        <strong>Encrypted Password</strong>: {{ user.local.password}}
-                    </p>
-
-                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
->>>>>>> 3rd Upload
                 </div>
                 <div id="PASSWORD" class="panel-body" style="display: none">
                 </div>
@@ -113,26 +97,7 @@
         <!-- ROW 2 -->
         <div class="col-sm-6">
             <div class="well">
-<<<<<<< HEAD
                 <p style="font-size: 32px;">Notifications</p>
-=======
-                <h3 class="text-primary"><span class="fa fa-facebook-square"></span> Facebook</h3>
-
-                <!--check if the user has this token (is the user authenticated with this social account) -->
-                <div ng-if="user.facebook.token !== undefined">
-                    <p>
-                        <strong>ID</strong>: {{ user.facebook.id }}<br>
-                        <strong>Login Token</strong>: {{ user.facebook.token }}<br>
-                        <strong>Facebook Email Address</strong>: {{ user.facebook.email }}<br>
-                    </p>
-
-                    <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
-                </div>
-                <div ng-if="user.facebook.token === undefined">
-                    <a href="/connect/facebook" class="btn btn-primary">Connect Facebook</a>
-                </div>
-
->>>>>>> 3rd Upload
             </div>
         </div>
     </div>
