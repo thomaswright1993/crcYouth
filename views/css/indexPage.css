@@ -43,6 +43,7 @@ a {
     color: #968aff
 }
 
+<<<<<<< HEAD
 /*.panel-heading{*/
     /*background: url('/images/crcYthSPLASHBACKnoTEXT.png');*/
     /*background-size: 100%;*/
@@ -95,6 +96,11 @@ a {
 
 .profilePic:hover img{
     border: 1px solid #06F;
+=======
+.jumbotron{
+    background: url('/images/crcYthSPLASHBACKnoTEXT.png');
+    background-size: 100%; color: #ffffff;
+>>>>>>> 3rd Upload
 }
 
 .page.ng-enter{
