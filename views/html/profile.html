@@ -1,12 +1,46 @@
 <div class="container">
 
     <div class="jumbotron">
-        <div style="border:1px solid #000;float: left; margin-right: 60px">
-            <img style="border:2px solid #ffffff;" width="160" height="160" src="/images/{{ user.imagePath }}"/>
+        <div style="float: left; margin-right: 60px">
+            <div style="border:1px solid #000;">
+                <div style="border:2px solid #ffffff; width: 160px; height:160px; background-image: url('/images/{{ user.imagePath }}'); background-size: 100% 100%;" ></div>
+            </div>
+
+            <form id="form" action="/submitProfilePic" enctype="multipart/form-data" method="post">
+                <button class="btn btn-primary btn-sm btn-file" style="width: 100%; ">
+                    <label for="inFile">Change Profile Pic <span class="glyphicon glyphicon-picture" style=""></span></label>
+                    <input id="inFile" type="file" name="userPhoto" onchange="checkFileSize();"/>
+                </button>
+            </form>
+
+            <script>
+                function checkFileSize() {
+                    var myFile = document.getElementById('inFile');
+                    if (myFile.files[0].size > 204800){
+                        var fileSize;
+                        if (myFile.files[0].size >= 1048576){
+                            fileSize = ((myFile.files[0].size/1024)/1024).toFixed(2) + "MB";
+                        } else {
+                            fileSize = (myFile.files[0].size/1024).toFixed(2) + "KB";
+                        }
+                        alert("Please keep your pictures under 200KB so that our server doesn't get too full. Your file is currently: " + fileSize);
+                    } else {
+                        document.getElementById('form').submit();
+                    }
+                }
+            </script>
+
         </div>
-        <h1 contenteditable="true" style="outline: none">{{ user.name }}</h1>
-        <a onclick="" style="clear: both" class="btn btn-primary btn-sm">Save Changes</a>
-        <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+        <form action="/submitNameAndEmail" method="post" onsubmit="saveChanges()">
+            <h1 id="nameBox" contenteditable="true" style="outline: none">{{ user.name }}</h1>
+            <button type="submit" id="submitButton" name="submit" style="clear: both" class="btn btn-primary btn-sm">Save Changes</button>
+
+            <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+
+            <h3 id="emailBox" contenteditable="true" style="outline: none; color: #ffffff; display: inline; padding-left: 1em;">{{ user.local.email }}</h3>
+            <input id="name" name="name" style="display: none"/>
+            <input id="email" name="email" style="display: none"/>
+        </form>
     </div>
 
 
@@ -14,51 +48,57 @@
 
         <!-- LOCAL INFORMATION -->
         <div class="col-sm-6">
+            <div class="panel panel-default">
+                    <ul id="parent" class="nav nav-tabs panel-heading">
+                        <li class="active"><a onclick="profileTab(this)"><strong>GROUP</strong></a></li>
+                        <li><a onclick="profileTab(this)"><strong>PASSWORD</strong></a></li>
+                        <li><a onclick="profileTab(this)"><strong>FACEBOOK</strong></a></li>
+                    </ul>
+
+                <div id="GROUP" class="panel-body ">
+                    <a href="/#groups/{{ group[0].id }}" style="float:left">
+                        <img style="border:1px solid rgba(0, 0, 0, 0.15);" width="80" height="80" src="/images/{{group[0].imagePath}}"/>
+                    </a>
+                    <div class="text-center" style="padding-left: 15px;">
+                        <a href="/#groups/{{ group[0].id}}" style="padding-top:0;margin-top: 0; font-size: 32px;"><b>{{group[0].name}}</b></a>
+                        <p style="font-size: 24px; color: black; margin: 0;">{{group[0].city + " - " + group[0].country}}</p>
+                    </div>
+                    <div ng-if="user.security_level == 1" style="clear: both">
+                        <br>
+                        <strong><span class="glyphicon glyphicon-time"></span> Once your group confirms you as a member, you can freely visit the site<br></strong>
+                    </div>
+                    <div ng-if="user.security_level >= 4">
+                        <br>
+                        <strong>You are a group Admin and have access to: <a href="/#updateGroup/{{user.group.id}}">Administrate {{group[0].name.toUpperCase()}}</a><br></strong>
+                    </div>
+                </div>
+                <div id="PASSWORD" class="panel-body" style="display: none">
+                </div>
+                <div id="FACEBOOK" class="panel-body" style="display: none">
+                    <p style="font-size: 32px;"><span class="fa fa-facebook-square"></span> Facebook</p>
+                    <div ng-if="user.facebook.token !== undefined">
+                        <p>
+                            <strong>Facebook Name</strong>: {{ user.facebook.name }}<br>
+                            <strong>Facebook Email Address</strong>: {{ user.facebook.email }}<br>
+                        </p>
+
+                        <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
+                    </div>
+                    <div ng-if="user.facebook.token === undefined">
+                        <a href="/connect/facebook" class="btn btn-primary">Connect Facebook</a>
+                    </div>
+                </div>
+            </div>
             <div class="well">
-                <h3><span class="glyphicon glyphicon-user"></span> Local</h3>
-
-                <div ng-if="user.local.email !== undefined">
-                    <p>
-                        <strong>ID</strong>: {{ user._id }}<br>
-                        <strong>Full Name</strong>: {{ user.name }}<br>
-                        <strong>Email Address</strong>: {{ user.local.email }}<br>
-                        <strong>Security Level</strong>: {{user.security_level}}<br>
-                        <strong>Encrypted Password</strong>: {{ user.local.password}}
-                        <strong>Group Location</strong>: {{ user.group.city }} - {{ user.group.country }}
-                        <strong>Gender</strong>: {{ user.gender }}
-                    </p>
-
-                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
-                </div>
-                <div ng-if="user.local.email === undefined">
-                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
-                </div>
-
+                <p style="font-size: 32px;">Messages</p>
             </div>
         </div>
 
-        <!-- FACEBOOK INFORMATION -->
+        <!-- ROW 2 -->
         <div class="col-sm-6">
             <div class="well">
-                <h3 class="text-primary"><span class="fa fa-facebook-square"></span> Facebook</h3>
-
-                <!--check if the user has this token (is the user authenticated with this social account) -->
-                <div ng-if="user.facebook.token !== undefined">
-                    <p>
-                        <strong>ID</strong>: {{ user.facebook.id }}<br>
-                        <strong>Login Token</strong>: {{ user.facebook.token }}<br>
-                        <strong>Facebook Email Address</strong>: {{ user.facebook.email }}<br>
-                    </p>
-
-                    <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
-                </div>
-                <div ng-if="user.facebook.token === undefined">
-                    <a href="/connect/facebook" class="btn btn-primary">Connect Facebook</a>
-                </div>
-
+                <p style="font-size: 32px;">Notifications</p>
             </div>
         </div>
-
     </div>
-
 </div>

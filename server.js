@@ -2,7 +2,6 @@
 
 var express      = require('express');
 var app          = express();
-var port         = process.env.PORT || 8080;
 var mongoose     = require('mongoose');
 var passport     = require('passport');
 var flash        = require('connect-flash');
@@ -11,42 +10,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 var path         = require('path');
-var multer       = require('multer');
-// FILE UPLOADING=============================================================
-var done = false;
-var mMulter = multer({ dest: '././views/images/',
-    rename: function (fieldname, filename) {
-        return filename + Date.now();
-    },
-    onFileUploadStart: function (file) {
-        console.log(file.originalname + ' is starting ...')
-    },
-    onFileUploadComplete: function (file) {
-        console.log(file.fieldname + ' uploaded to  ' + file.path)
-        done = true;
-    }
-});
-
-var Group = require('././app/models/group');
-
-app.post('/submitGroup', mMulter, function(req, res){
-    if(done == true) {
-        console.log(req.files);
-
-
-        var newGroup = new Group();
-        var leader = {name: "", _id: ""};
-
-        if (req.user !== undefined) {
-            leader = {name: req.user.name, _id: req.user._id};
-        }
-
-        console.log(req.body.groupId, req.body.name, req.files.userPhoto.name, req.body.country, req.body.city, leader);
-        newGroup.update(req.body.groupId, req.body.name, req.files.userPhoto.name, req.body.country, req.body.city, leader);
-        res.redirect('/#groups:' + req.body.groupId);
-    }
-});
-
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 
 // DB CODE ===========================================================
@@ -68,10 +33,13 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+// serve static assets
+app.use(express.static(__dirname));
+
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes
 
 // launch ======================================================================
-app.listen(port, function(){
+app.listen(port, ipaddress, function(){
     console.log('The magic happens on port ' + port);
 });

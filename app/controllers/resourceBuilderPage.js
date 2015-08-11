@@ -14,22 +14,22 @@ angular.module('indexApp').controller('ResourceBuilderCtrl', function($scope, $h
 
     $http.get('/checkResourceLikes/' + $routeParams.resourceID).success(function(likes){
         var button = document.getElementById("likeButton");
-        $scope.likes = likes[0][0];
+        $scope.likeCount = likes[0][0];
         if (likes[0][1]){
             button.className = "btn btn-lg bg-success";
         }
         like = function(){
             if (button.className === "btn btn-lg bg-success"){
                 button.className = "btn btn-lg";
-                $http.post('/removeResourceLike/' + $routeParams.resourceID).success(function(likes){
-                    $scope.likes = likes[0]._id;
+                $http.post('/removeResourceLike/' + $routeParams.resourceID).success(function(likeCount){
+                    $scope.likeCount = likeCount;
                 }).error(function (err){
                     console.log(err);
                 });
             } else {
                 button.className = "btn btn-lg bg-success";
-                $http.post('/addResourceLike/' + $routeParams.resourceID).success(function(likes){
-                    $scope.likes = likes[0]._id;
+                $http.post('/addResourceLike/' + $routeParams.resourceID).success(function(likeCount){
+                    $scope.likeCount = likeCount;
                 }).error(function (err){
                     console.log(err);
                 });

@@ -105,6 +105,7 @@ module.exports = function(passport) {
                         newUser.local.email    = email.toLowerCase();
                         newUser.local.password = newUser.generateHash(password);
                         newUser.group = {
+                            _id: req.body.realID,
                             id: req.body.groupID,
                             name: req.body.groupName,
                             country: req.body.groupCountry,
@@ -150,7 +151,7 @@ module.exports = function(passport) {
                             // if there is a user id already but no token (user was linked at one point and then removed)
                             if (!user.facebook.token) {
                                 user.facebook.token = token;
-                                user.name = profile.name.givenName + ' ' + profile.name.familyName;
+                                user.facebook.name = profile.name.givenName + ' ' + profile.name.middleName + ' ' + profile.name.familyName;
                                 user.facebook.email = profile.emails[0].value;
 
                                 user.save(function (err) {
@@ -167,7 +168,7 @@ module.exports = function(passport) {
 
                             newUser.facebook.id = profile.id;
                             newUser.facebook.token = token;
-                            newUser.name = profile.name.givenName + ' ' + profile.name.familyName;
+                            newUser.facebook.name = profile.name.givenName + ' ' + profile.name.middleName + ' ' + profile.name.familyName;
                             newUser.facebook.email = profile.emails[0].value;
 
                             newUser.save(function (err) {
@@ -184,7 +185,7 @@ module.exports = function(passport) {
 
                     user.facebook.id = profile.id;
                     user.facebook.token = token;
-                    user.name = profile.name.givenName + ' ' + profile.name.familyName;
+                    user.facebook.name = profile.name.givenName + ' ' + profile.name.middleName + ' ' + profile.name.familyName;
                     user.facebook.email = profile.emails[0].value;
 
                     user.save(function (err) {

@@ -213,20 +213,20 @@ module.exports = function(app, passport) {
     });
 
     app.post('/addResourceLike/:id', checkAccessLevel(3), function(req, res){
-        var resourceLikes = [];
+        var likeCount;
         Resource.find({_id: req.params.id}, function (err, resources) {
-            resourceLikes.push(resources[0].addLike(req.user._id));
+            likeCount = resources[0].addLike(req.user._id);
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(resourceLikes));
+            res.end(JSON.stringify(likeCount));
         });
     });
 
     app.post('/removeResourceLike/:id', checkAccessLevel(3), function(req, res){
-        var resourceLikes = [];
+        var likeCount;
         Resource.find({_id: req.params.id}, function (err, resources) {
-            resourceLikes.push(resources[0].removeLike(req.user._id));
+            likeCount = resources[0].removeLike(req.user._id);
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(resourceLikes));
+            res.end(JSON.stringify(likeCount));
         });
     });
 
@@ -269,9 +269,9 @@ module.exports = function(app, passport) {
 
     app.get('/getGroup/:id', function (req, res) {
         var groupData = [];
-        Group.find({id: req.params.id}, function (err, groups) {
-            if(groups[0] !== undefined){
-                groupData.push(groups[0].getFull());
+        Group.findOne({ id : req.params.id}, function (err, groups) {
+            if(groups !== undefined && groups !== null){
+                groupData.push(groups.getFull());
             }
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(groupData));
@@ -289,19 +289,91 @@ module.exports = function(app, passport) {
         });
     });
 
-//    // process the group
-//    app.post('/submitGroup', function (req, res) {
-//        var newGroup = new Group();
-//        var leader = {name:"", _id:""};
-//
-//        if(req.user !== undefined){
-//            leader = {name: req.user.name, _id:req.user._id};
-//        }
-//
-//        console.log(req.body.groupId, req.body.name, "image", req.body.country, req.body.city, leader);
-//        newGroup.update(req.body.groupId, req.body.name, "image", req.body.country, req.body.city, leader);
-//        res.redirect('/#groups:' + req.body.groupId);
-//    });
+    var multer       = require('multer');
+// FILE UPLOADING=============================================================
+    var mMulter = multer({ dest: '././views/images/',
+        done: false,
+        rename: function (fieldname, filename) {
+            return filename + Date.now();
+        },
+        onFileUploadStart: function (file) {
+            console.log(file.originalname + ' is starting ...')
+        },
+        onFileUploadComplete: function (file) {
+            console.log(file.fieldname + ' uploaded to  ' + file.path);
+            mMulter.done = true;
+        }
+    });
+
+    app.post('/submitGroup', mMulter, function(req, res){
+        if(mMulter.done == true) {
+            console.log(req.files);
+
+
+            var newGroup = new Group();
+            var leader = {name: "", _id: ""};
+
+            if (req.user !== undefined) {
+                leader = {name: req.user.name, _id: req.user._id};
+            }
+
+            console.log(req.body.groupId, req.body.name, req.files.userPhoto.name, req.body.country, req.body.city, leader);
+            newGroup.update(req.body.groupId, req.body.name, req.files.userPhoto.name, req.body.country, req.body.city, leader);
+            res.redirect('/#groups:' + req.body.groupId);
+        }
+    });
+
+    app.post('/submitNameAndEmail', checkAccessLevel(1), function(req, res){
+        User.find({_id: req.user._id}, function (err, user) {
+            user[0].name = req.body.name;
+            user[0].local.email = req.body.email.toLowerCase();
+
+            user[0].save();
+            res.redirect('/#profile');
+        });
+    });
+
+    var fs           = require('fs');
+    var User = require('../app/models/user');
+
+    app.post('/submitProfilePic', checkAccessLevel(1), mMulter, function (req, res) {
+        if(mMulter.done == true) {
+            fs.unlink('././views/images/' + req.user.imagePath, function (err) {
+                if (err) console.log(err);
+                else console.log('successfully deleted ././views/images/' + req.user.imagePath);
+
+                var arr = req.files.userPhoto.name.split('.');
+                var extension = "." + arr[arr.length-1];
+                var fileName = "profile_pictures/" + req.user._id + extension;
+                fs.rename('././views/images/' + req.files.userPhoto.name, "././views/images/" + fileName, function (err) {
+                    if (err) throw err;
+                    console.log('renamed complete');
+                    User.find({_id: req.user._id}, function (err, user) {
+                        user[0].imagePath = fileName;
+                        user[0].save();
+
+                        if(req.user.security_level >= 3){
+                            Group.find({id: req.user.group.id}, function (err, group) {
+                                for (var i = 0; i < group[0].leaders.length; i++){
+                                    if((""+group[0].leaders[i]._id) === (""+req.user._id)){
+
+                                        group[0].leaders[i].imagePath = fileName;
+                                        group[0].save();
+                                    }
+                                }
+                            });
+                        }
+
+                        console.dir(user[0].imagePath);
+                        mMulter.done = false;
+                        res.redirect('/#profile');
+                    });
+                });
+
+
+            });
+        }
+    });
 };
 
 // route middleware to ensure user is logged in and of appropriate level

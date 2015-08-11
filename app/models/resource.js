@@ -9,16 +9,17 @@ var resourceSchema = mongoose.Schema({
     tags            : [],
     writerID        : String,
     dateWritten     : Date,
+    likeCount       : Number,
     likes           : [idSchema]
 });
 
 
 resourceSchema.methods.getPreview = function() {
-    return {id: this._id, title: this.title, tags: this.tags, writerID: this.writerID, date: this.dateWritten, likes: this.likes[0]};
+    return {id: this._id, title: this.title, tags: this.tags, writerID: this.writerID, date: this.dateWritten, likeCount: this.likeCount};
 };
 
 resourceSchema.methods.getFull = function() {
-    return {id: this._id, title: this.title, body: this.body, tags: this.tags, writerID: this.writerID, date: this.dateWritten, likes: this.likes[0]};
+    return {id: this._id, title: this.title, body: this.body, tags: this.tags, writerID: this.writerID, date: this.dateWritten, likeCount: this.likeCount};
 };
 
 resourceSchema.methods.checkLikes = function(userID) {
@@ -29,7 +30,7 @@ resourceSchema.methods.checkLikes = function(userID) {
             userLikes = true;
         }
     }
-    return [this.likes[0]._id, userLikes];
+    return [this.likeCount, userLikes];
 };
 
 resourceSchema.methods.addLike = function(userID){
@@ -41,23 +42,23 @@ resourceSchema.methods.addLike = function(userID){
         }
     }
     if(!userLikes){
-        this.likes[0]._id =  parseInt(this.likes[0]._id) + 1;
+        this.likeCount =  parseInt(this.likeCount) + 1;
         this.likes.push(newID);
     }
     this.save();
-    return this.likes[0];
+    return this.likeCount;
 };
 
 resourceSchema.methods.removeLike = function(userID){
     var newID = new ID({_id:userID});
     for(var i = 0; i < this.likes.length; i++){
         if (this.likes[i]._id === newID._id){
-            this.likes[0]._id = parseInt(this.likes[0]._id) - 1;
+            this.likeCount = parseInt(this.likeCount) - 1;
             this.likes.splice(i, 1);
         }
     }
     this.save();
-    return this.likes[0];
+    return this.likeCount;
 };
 
 resourceSchema.methods.update = function(title, tags, body, writer) {
@@ -113,7 +114,8 @@ module.exports = mongoose.model('Resource', resourceSchema);
 //            'frameborder="0"></iframe>',
 //        writerID: 'Thomas '+o+' Wright',
 //        dateWritten: new Date(),
-//        likes: [new ID({_id:0})]
+//        likeCount : 0,
+//        likes: []
 //    });
 //    newResource.save(function (err, newGroup) {
 //        if (err) return console.error(err);

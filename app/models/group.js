@@ -80,13 +80,13 @@ module.exports = mongoose.model('Group', groupSchema);
 //        leaders         : [
 //            {
 //                title: "Master Chief",
-//                _id: "555c44fee896efcc788c40bd",
+//                _id: "55afa4668f24533008892e63",
 //                name: "Thomas Wright",
 //                imagePath: "thomas.jpg"
 //            },
 //            {
 //                title: "Razel Dazel",
-//                _id: "555c44fee896efcc788c40bd",
+//                _id: "55afa4668f24533008892e63",
 //                name: "Ramon Affleck",
 //                imagePath: "thomas.jpg"
 //            },
