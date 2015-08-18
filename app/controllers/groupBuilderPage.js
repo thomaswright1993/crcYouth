@@ -5,7 +5,7 @@ angular.module('indexApp').controller('GroupBuilderCtrl', function($scope, $http
         for(var i = 0; i < groupResults.length; i++){
             console.log(groupResults[i]);
             if (groupResults[i].splashBackPath === undefined){
-                groupResults[i].splashBackPath = "crcYthSPLASHBACKnoTEXT.png";
+                groupResults[i].splashBackPath = "purpleSplashBack.png";
             }
             $scope.group.push(groupResults[i]);
         }
